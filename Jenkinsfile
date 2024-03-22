@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        SLACK_CHANNEL_ID = 'jenkins-ci'
+        SLACK_CHANNEL_ID = 'jenkins-ci' // alter if needed, this is default
     }
     
     stages {
@@ -41,17 +41,17 @@ pipeline {
             }
         }
     }
-
+    
     post {
         always {
-            slack(message: "Terraform plan generated successfully!", channel: SLACK_CHANNEL_ID, color: 'good')
+            slackSend(color: 'good', message: "Terraform plan generated successfully!", channel: env.SLACK_CHANNEL_ID)
         }
         success {
-            slack(message: "Pipeline succeeded!", channel: SLACK_CHANNEL_ID, color: 'good')
+            slackSend(color: 'good', message: "Pipeline succeeded!", channel: env.SLACK_CHANNEL_ID)
         }
         failure {
-            slack(message: "Pipeline failed!", channel: SLACK_CHANNEL_ID, color: 'danger')
+            slackSend(color: 'danger', message: "Pipeline failed!", channel: env.SLACK_CHANNEL_ID)
         }
-    }    
+    }
 }
 
