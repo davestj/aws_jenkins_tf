@@ -1,28 +1,28 @@
 # main.tf
 
 provider "aws" {
-  region = "us-east-1"  # Change to your desired region
+  region = "us-east-1" # Change to your desired region
 }
 
 # EC2 Instance for Jenkins
 resource "aws_instance" "jenkins_instance" {
-  ami           = var.ami_id
-  instance_type = "m4.xlarge"
-  key_name      = var.ssh_key_name
+  ami             = var.ami_id
+  instance_type   = "m4.xlarge"
+  key_name        = var.ssh_key_name
   security_groups = [aws_security_group.jenkins_security_group.id]
 
   root_block_device {
-    volume_size = 120
-    volume_type = "gp3"
-    encrypted   = true
+    volume_size           = 120
+    volume_type           = "gp3"
+    encrypted             = true
     delete_on_termination = false
   }
 
   ebs_block_device {
-    device_name = "/dev/sdh"
-    volume_size = 320
-    volume_type = "gp3"
-    encrypted   = true
+    device_name           = "/dev/sdh"
+    volume_size           = 320
+    volume_type           = "gp3"
+    encrypted             = true
     delete_on_termination = false
   }
 
@@ -58,14 +58,14 @@ resource "aws_security_group" "jenkins_security_group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH access from anywhere (for demo purposes)
+    cidr_blocks = ["0.0.0.0/0"] # Allow SSH access from anywhere (for demo purposes)
   }
 
   ingress {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP access from anywhere (for demo purposes)
+    cidr_blocks = ["0.0.0.0/0"] # Allow HTTP access from anywhere (for demo purposes)
   }
 
   egress {
@@ -146,31 +146,31 @@ resource "aws_lb_listener_rule" "jenkins_listener_rule" {
 #Zip it n ship it
 resource "null_resource" "generate_lambda_zip" {
   provisioner "local-exec" {
-    command = "zip -r lambda_function.zip ./lambda_function"
+    command     = "zip -r lambda_function.zip ./lambda_function"
     working_dir = "${path.module}/lambda_function"
   }
 }
 
 # Lambda Function for ACM Certificate Auto-Renewal
 resource "aws_lambda_function" "acm_certificate_renewal" {
-  filename         = "${path.cwd}/lambda_function.zip"
-  function_name    = "acm-certificate-renewal"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "lambda_function.lambda_handler"
-  runtime          = "python3.8"
+  filename      = "${path.cwd}/lambda_function.zip"
+  function_name = "acm-certificate-renewal"
+  role          = aws_iam_role.lambda_role.arn
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.8"
 }
 
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-acm-certificate-renewal-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
-    "Statement": [
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "lambda.amazonaws.com"
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "lambda.amazonaws.com"
         },
-        "Action": "sts:AssumeRole"
+        "Action" : "sts:AssumeRole"
       }
     ]
   })
@@ -178,20 +178,20 @@ resource "aws_iam_role" "lambda_role" {
   inline_policy {
     name = "lambda-role-policy"
     policy = jsonencode({
-      "Version": "2012-10-17",
-      "Statement": [
+      "Version" : "2012-10-17",
+      "Statement" : [
         {
-          "Effect": "Allow",
-          "Action": "logs:CreateLogGroup",
-          "Resource": "*"
+          "Effect" : "Allow",
+          "Action" : "logs:CreateLogGroup",
+          "Resource" : "*"
         },
         {
-          "Effect": "Allow",
-          "Action": [
+          "Effect" : "Allow",
+          "Action" : [
             "logs:CreateLogStream",
             "logs:PutLogEvents"
           ],
-          "Resource": "arn:aws:logs:*:*:*"
+          "Resource" : "arn:aws:logs:*:*:*"
         }
       ]
     })
