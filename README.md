@@ -58,7 +58,6 @@ Are you ready to set up a robust CI/CD environment using Jenkins on Amazon Web S
    ```bash
    git clone https://github.com/davestj/aws_jenkins_tf.git
    ```
-   Replace `davestj` with your GitHub username.
 
 2. **Edit Terraform Variables:**
    - Navigate to the `aws_jenkins_tf` directory.
