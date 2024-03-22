@@ -18,7 +18,7 @@ Are you ready to set up a robust CI/CD environment using Jenkins on Amazon Web S
 
 **Step 2: Installing Jenkins on EC2:**
 1. Update the package repository: `sudo yum update -y`.
-2. Install Java Development Kit (JDK): `sudo yum install java-1.8.0-openjdk-devel -y`.
+2. Install Java Development Kit (JDK): `sudo yum install java-17-openjdk-* -y`.
 3. Add the Jenkins repository to yum: `sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo`.
 4. Import the Jenkins repository GPG key: `sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key`.
 5. Install Jenkins: `sudo yum install jenkins -y`.
