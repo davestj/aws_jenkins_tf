@@ -214,3 +214,23 @@ output "ssl_certificate_arn" {
   value = aws_acm_certificate.jenkins_certificate.arn
 }
 
+output "jenkins_instance_id" {
+  description = "The ID of the newly created Jenkins EC2 instance"
+  value       = aws_instance.jenkins_instance.id
+}
+
+output "jenkins_instance_internal_ip" {
+  description = "The internal IP address of the newly created Jenkins EC2 instance"
+  value       = aws_instance.jenkins_instance.private_ip
+}
+
+output "jenkins_instance_internal_dns" {
+  description = "The internal DNS name of the newly created Jenkins EC2 instance"
+  value       = aws_instance.jenkins_instance.private_dns
+}
+
+output "elb_internal_dns" {
+  description = "The internal DNS name of the Elastic Load Balancer"
+  value       = aws_lb.jenkins_lb.dns_name
+}
+
