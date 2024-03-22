@@ -234,3 +234,13 @@ output "elb_internal_dns" {
   value       = aws_lb.jenkins_lb.dns_name
 }
 
+output "lambda_function_arn" {
+  description = "The ARN of the Lambda function for SSL certificate auto-update"
+  value       = aws_lambda_function.acm_certificate_renewal.arn
+}
+
+output "lambda_function_name" {
+  description = "The name of the Lambda function for SSL certificate auto-update"
+  value       = aws_lambda_function.acm_certificate_renewal.function_name
+}
+
